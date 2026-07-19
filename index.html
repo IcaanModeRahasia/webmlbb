@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Edit Spek MLBB x Icaanz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #0a0d14 0%, #181e2b 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .glass-card {
+      max-width: 820px;
+      width: 100%;
+      background: rgba(22, 28, 40, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 44px;
+      padding: 24px 20px 32px;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 210, 80, 0.12);
+      border: 1px solid rgba(255, 210, 80, 0.15);
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: #f5e7c8;
+      text-shadow: 0 2px 12px rgba(255, 200, 80, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      letter-spacing: -0.3px;
+    }
+
+    h1 small {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #c9b17e;
+      background: rgba(255, 210, 80, 0.1);
+      padding: 4px 18px;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 210, 80, 0.15);
+    }
+
+    .preview-area {
+      background: #0c111b;
+      border-radius: 28px;
+      padding: 16px 14px 14px;
+      margin-bottom: 20px;
+      border: 1px solid #2a3345;
+      box-shadow: inset 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 6px 12px 6px;
+      color: #a8b0c2;
+      font-weight: 500;
+      font-size: 0.85rem;
+      border-bottom: 1px solid #232b3b;
+    }
+
+    .preview-header span:first-child {
+      color: #f0dbb0;
+    }
+
+    .preview-header .file-badge {
+      background: #1a2332;
+      padding: 4px 14px;
+      border-radius: 40px;
+      border: 1px solid #3a445a;
+      font-size: 0.75rem;
+      color: #bcc3d4;
+    }
+
+    .mockup-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px 2px 4px;
+      max-height: 420px;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+    }
+
+    .mockup-grid::-webkit-scrollbar {
+      width: 4px;
+    }
+    .mockup-grid::-webkit-scrollbar-track {
+      background: #171f2b;
+      border-radius: 12px;
+    }
+    .mockup-grid::-webkit-scrollbar-thumb {
+      background: #c9a75c;
+      border-radius: 12px;
+    }
+
+    .hero-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #141c28;
+      padding: 8px 16px 8px 12px;
+      border-radius: 60px;
+      border-left: 4px solid #f5c542;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      transition: all 0.15s;
+      min-height: 56px;
+    }
+
+    .hero-item .hero-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 40px;
+      background: #2a3548;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+      color: #e6d7b0;
+      flex-shrink: 0;
+      background-image: radial-gradient(circle at 30% 30%, #3e4a60, #1a212f);
+      border: 1px solid #4f5a70;
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.05);
+    }
+
+    .hero-item .info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-item .hero-name {
+      font-weight: 600;
+      color: #f0e3cc;
+      font-size: 0.95rem;
+    }
+
+    .hero-item .skin-name {
+      font-size: 0.75rem;
+      color: #b7aa88;
+      background: rgba(255, 210, 80, 0.08);
+      padding: 0 10px;
+      border-radius: 30px;
+      display: inline-block;
+      width: fit-content;
+      border: 1px solid #3f485e;
+      margin-top: 1px;
+    }
+
+    .hero-item .badge-skin {
+      background: #f5c54218;
+      border: 1px solid #f5c54240;
+      border-radius: 40px;
+      padding: 2px 14px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #f5d68a;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+    }
+
+    .upload-area {
+      background: #111823;
+      border-radius: 30px;
+      padding: 14px 18px;
+      margin: 10px 0 16px;
+      border: 1px dashed #4f5a70;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .upload-area label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #d4c8ac;
+      font-weight: 500;
+      cursor: pointer;
+      background: #1e2636;
+      padding: 8px 20px;
+      border-radius: 60px;
+      border: 1px solid #384258;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .upload-area label:hover {
+      background: #293244;
+      border-color: #c9a75c;
+    }
+
+    .upload-area input[type="file"] {
+      display: none;
+    }
+
+    .file-name {
+      color: #b4b9c9;
+      font-size: 0.8rem;
+      background: #1a212f;
+      padding: 4px 16px;
+      border-radius: 40px;
+      border: 1px solid #384052;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .input-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .input-group input {
+      flex: 1 1 160px;
+      background: #171f2b;
+      border: 1px solid #384258;
+      border-radius: 40px;
+      padding: 12px 18px;
+      color: #f0e3cc;
+      font-size: 0.9rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: #f5c542;
+      box-shadow: 0 0 0 3px #f5c54225;
+      background: #1e2838;
+    }
+
+    .input-group input::placeholder {
+      color: #6a758c;
+      font-weight: 300;
+    }
+
+    .code-section {
+      background: #0d131e;
+      border-radius: 40px;
+      padding: 12px 18px;
+      margin: 10px 0 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #2a3345;
+      gap: 8px;
+    }
+
+    .code-section .code-label {
+      color: #b9b19a;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .code-section .code-label strong {
+      color: #f5d68a;
+      font-weight: 600;
+      background: #1a2335;
+      padding: 4px 16px;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      border: 1px solid #c9a75c50;
+      font-family: monospace;
+    }
+
+    .code-section .admin-wa {
+      background: #1a2335;
+      padding: 6px 16px;
+      border-radius: 60px;
+      border: 1px solid #4f5a70;
+      color: #d4c8ac;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .code-section .admin-wa a {
+      color: #f5d68a;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px dotted #c9a75c;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #f5c542 0%, #dba42b 100%);
+      border: none;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: 0.5px;
+      color: #141a24;
+      box-shadow: 0 8px 20px rgba(245, 197, 66, 0.3);
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .btn-generate:hover {
+      transform: scale(1.01);
+      background: #facc54;
+      box-shadow: 0 10px 28px #f5c54255;
+    }
+
+    .btn-generate:active {
+      transform: scale(0.97);
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #7a8296;
+      font-size: 0.7rem;
+      margin-top: 16px;
+      border-top: 1px solid #232b3b;
+      padding-top: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    .footer-note a {
+      color: #d4b87a;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .result-hd {
+      margin-top: 20px;
+      background: #0a0f18;
+      border-radius: 28px;
+      padding: 12px;
+      border: 1px solid #f5c54230;
+      display: none;
+      transition: all 0.3s;
+    }
+
+    .result-hd.show {
+      display: block;
+      animation: fadeUp 0.4s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-hd img {
+      width: 100%;
+      height: auto;
+      border-radius: 18px;
+      display: block;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.8);
+      border: 1px solid #c9a75c30;
+      image-rendering: high-quality;
+    }
+
+    .result-hd .hd-label {
+      text-align: center;
+      color: #f5d68a;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      letter-spacing: 1px;
+      opacity: 0.7;
+    }
+
+    .empty-mock {
+      color: #5b657a;
+      text-align: center;
+      padding: 28px 0;
+      font-style: italic;
+      background: #111a26;
+      border-radius: 60px;
+      border: 1px dashed #3d465a;
+    }
+
+    @media (max-width: 550px) {
+      .glass-card {
+        padding: 16px 12px;
+      }
+      h1 {
+        font-size: 1.4rem;
+      }
+      .upload-area {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .code-section {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .hero-item {
+        padding: 6px 12px;
+        gap: 10px;
+      }
+      .hero-item .hero-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="glass-card">
+  <h1>
+    ⚡ EDIT SPEK MLBB 
+    <small>× icaanz</small>
+  </h1>
+
+  <!-- PREVIEW AREA -->
+  <div class="preview-area">
+    <div class="preview-header">
+      <span>📸 MLBB Editor · Preview</span>
+      <span class="file-badge" id="fileBadge">📎 IMG-20260719-WA0059.jpg</span>
+    </div>
+
+    <div class="mockup-grid" id="heroGrid"></div>
+  </div>
+
+  <!-- Upload screenshot profil -->
+  <div class="upload-area">
+    <label for="fileInput">📤 Upload Screenshot Profil</label>
+    <input type="file" id="fileInput" accept="image/*">
+    <span class="file-name" id="fileDisplay">IMG-20260719-WA0059.jpg</span>
+  </div>
+
+  <!-- Input hero + skin -->
+  <div class="input-group">
+    <input type="text" id="heroInput" placeholder="Nama Hero (contoh: Layla)" value="Layla">
+    <input type="text" id="skinInput" placeholder="Nama Skin (contoh: Blue Spectre)" value="Blue Spectre">
+  </div>
+
+  <!-- Kode Generate + Admin -->
+  <div class="code-section">
+    <span class="code-label">🔑 Kode Generate <strong>IcaanzMlbb02838</strong></span>
+    <span class="admin-wa">📞 minta kode ke <a href="https://wa.me/6283199265399" target="_blank">admin icaanz</a></span>
+  </div>
+
+  <!-- Tombol Generate -->
+  <button class="btn-generate" id="generateBtn">⚡ Generate HD</button>
+
+  <!-- Hasil Generate -->
+  <div class="result-hd" id="resultHD">
+    <img id="resultImage" src="#" alt="Generated HD Preview">
+    <div class="hd-label">✦ HD GENERATE × icaanz ✦</div>
+  </div>
+
+  <div class="footer-note">
+    ✦ minimal 10 skin hero · edit spek MLBB × icaanz ✦<br>
+    <a href="https://wa.me/6283199265399" target="_blank">wa.me/6283199265399</a>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const allSkins = [
+      // --- TANK ---
+      { hero: 'Tigreal', skin: 'Dark Guardian' }, { hero: 'Tigreal', skin: 'Fallen King' }, { hero: 'Tigreal', skin: 'Wyrmslayer' }, { hero: 'Tigreal', skin: 'Lightborn - Defender' }, { hero: 'Tigreal', skin: 'Gold Baron' }, { hero: 'Tigreal', skin: 'Galactic Marshal' }, { hero: 'Tigreal', skin: 'Baron Helion' },
+      { hero: 'Franco', skin: 'Master Chef' }, { hero: 'Franco', skin: 'Apocalypse' }, { hero: 'Franco', skin: 'Locomotive' }, { hero: 'Franco', skin: 'Wheatfield Nightmare' }, { hero: 'Franco', skin: 'Valhalla Ruler' }, { hero: 'Franco', skin: 'Blazing Axe' }, { hero: 'Franco', skin: 'King of Hell' }, { hero: 'Franco', skin: 'Quantum Vanguard' },
+      { hero: 'Akai', skin: 'Summer Party' }, { hero: 'Akai', skin: 'Monk' }, { hero: 'Akai', skin: 'Imperial Assassin' }, { hero: 'Akai', skin: 'Akazukin' }, { hero: 'Akai', skin: 'Street Enforcer' }, { hero: 'Akai', skin: 'Stream Recluse' }, { hero: 'Akai', skin: 'Kung Fu Panda' }, { hero: 'Akai', skin: 'Pumpkin Brawler' },
+      { hero: 'Minotaur', skin: 'Orbiter' }, { hero: 'Minotaur', skin: 'Bursting Lava' }, { hero: 'Minotaur', skin: 'Sacred Hammer' }, { hero: 'Minotaur', skin: 'Taurus' }, { hero: 'Minotaur', skin: 'Dreadnought' }, { hero: 'Minotaur', skin: 'Relic Guardian' },
+      { hero: 'Lolita', skin: 'Soldier in Training' }, { hero: 'Lolita', skin: 'Genki Slam' }, { hero: 'Lolita', skin: 'Lion Dance' }, { hero: 'Lolita', skin: 'Special Op' }, { hero: 'Lolita', skin: 'Impish Trickster' }, { hero: 'Lolita', skin: 'Astro Mallet' },
+      { hero: 'Gatotkaca', skin: 'Mighty King' }, { hero: 'Gatotkaca', skin: 'Arhat King' }, { hero: 'Gatotkaca', skin: 'Sentinel' }, { hero: 'Gatotkaca', skin: 'Spark' }, { hero: 'Gatotkaca', skin: 'Hip-hop Boxer' }, { hero: 'Gatotkaca', skin: 'Tide Preserver' },
+      { hero: 'Grock', skin: 'Grave Guardian' }, { hero: 'Grock', skin: 'Castle Guard' }, { hero: 'Grock', skin: 'V.E.N.O.M. Monitor Lizard' }, { hero: 'Grock', skin: 'Codename: Rhino' }, { hero: 'Grock', skin: 'Icelandic Golem' }, { hero: 'Grock', skin: 'Ancient Totem' },
+      { hero: 'Hylos', skin: 'Abyssal Shaman' }, { hero: 'Hylos', skin: 'Phantom Seer' }, { hero: 'Hylos', skin: 'Chiron' }, { hero: 'Hylos', skin: 'Iron Steed' }, { hero: 'Hylos', skin: 'Jungle Watcher' },
+      { hero: 'Uranus', skin: 'Ancient Soul' }, { hero: 'Uranus', skin: 'Mech Protect' }, { hero: 'Uranus', skin: 'Video Game Dominator' }, { hero: 'Uranus', skin: 'Celestial Bastion' }, { hero: 'Uranus', skin: 'Earthen Relic' },
+      { hero: 'Belerick', skin: 'Tiger\'s Claw' }, { hero: 'Belerick', skin: 'Torch Guardian' }, { hero: 'Belerick', skin: 'The Deep One' }, { hero: 'Belerick', skin: 'Emerald Guardian' },
+      { hero: 'Khufra', skin: 'Desert Owl' }, { hero: 'Khufra', skin: 'Apophis' }, { hero: 'Khufra', skin: 'Gentleman Thief' }, { hero: 'Khufra', skin: 'Volcanic Overlord' }, { hero: 'Khufra', skin: 'Dreadful Clown' }, { hero: 'Khufra', skin: 'Iron Hook' },
+      { hero: 'Baxia', skin: 'Wild Totem' }, { hero: 'Baxia', skin: 'Badass Roller' }, { hero: 'Baxia', skin: 'Ba-Tender' }, { hero: 'Baxia', skin: 'Black Tortoise' },
+      { hero: 'Atlas', skin: 'Ocean Gladiator' }, { hero: 'Atlas', skin: 'Fuel Turbine' }, { hero: 'Atlas', skin: 'Space Cyborg' }, { hero: 'Atlas', skin: 'Mecha Infiltrator' },
+      { hero: 'Gloo', skin: 'Verdant Jelly' }, { hero: 'Gloo', skin: 'Ice Jelly' }, { hero: 'Gloo', skin: 'Garlic Jelly' },
+      { hero: 'Edith', skin: 'Celestial Safeguard' }, { hero: 'Edith', skin: 'Redemption' }, { hero: 'Edith', skin: 'Ancient Guardian' },
+
+      // --- FIGHTER ---
+      { hero: 'Balmond', skin: 'Power Source' }, { hero: 'Balmond', skin: 'Ghoulish Fury' }, { hero: 'Balmond', skin: 'Savage Hunter' }, { hero: 'Balmond', skin: 'God of War' }, { hero: 'Balmond', skin: 'Bioroid' }, { hero: 'Balmond', skin: 'Infernal Warlord' },
+      { hero: 'Alucard', skin: 'Lone Hero' }, { hero: 'Alucard', skin: 'Fiery Inferno' }, { hero: 'Alucard', skin: 'Child of the Fall' }, { hero: 'Alucard', skin: 'Viscount' }, { hero: 'Alucard', skin: 'Romantic Fantasy' }, { hero: 'Alucard', skin: 'Obsidian Blade' }, { hero: 'Alucard', skin: 'Lightborn - Striker' },
+      { hero: 'Zilong', skin: 'Elite Warrior' }, { hero: 'Zilong', skin: 'Glorious General' }, { hero: 'Zilong', skin: 'Eastern Warrior' }, { hero: 'Zilong', skin: 'Blazing Knight' }, { hero: 'Zilong', skin: 'Changbanpo Commander' }, { hero: 'Zilong', skin: 'Loyal Paladin' }, { hero: 'Zilong', skin: 'Storm Rider' }, { hero: 'Zilong', skin: 'Empyrean Paladin' },
+      { hero: 'Freya', skin: 'Dark Rose' }, { hero: 'Freya', skin: 'Dragon Hunter' }, { hero: 'Freya', skin: 'Beach Sweetheart' }, { hero: 'Freya', skin: 'War Angel' }, { hero: 'Freya', skin: 'Gladiator' }, { hero: 'Freya', skin: 'Raven Shogun' }, { hero: 'Freya', skin: 'S.A.B.E.R. Manhunter' }, { hero: 'Freya', skin: 'Galactic Vanquisher' },
+      { hero: 'Chou', skin: 'Hip-hop Boy' }, { hero: 'Chou', skin: 'King of Muay Thai' }, { hero: 'Chou', skin: 'Dragon Boy' }, { hero: 'Chou', skin: 'Furious Tiger' }, { hero: 'Chou', skin: 'Iori Yagami' }, { hero: 'Chou', skin: 'Go Ballistic' }, { hero: 'Chou', skin: 'Thunderfist' }, { hero: 'Chou', skin: 'STUN Chou' }, { hero: 'Chou', skin: 'ECHO' },
+      { hero: 'Sun', skin: 'Battle Buddha' }, { hero: 'Sun', skin: 'Rock Star' }, { hero: 'Sun', skin: 'Street Legend' }, { hero: 'Sun', skin: 'Simian Curse' }, { hero: 'Sun', skin: 'Celestial Outlaw' }, { hero: 'Sun', skin: 'Wicked Monkey' },
+      { hero: 'Alpha', skin: 'Onimusha Commander' }, { hero: 'Alpha', skin: 'Fierce Dragon' }, { hero: 'Alpha', skin: 'Sea Gladiator' }, { hero: 'Alpha', skin: 'Crimson Warrior' }, { hero: 'Alpha', skin: 'General Void' }, { hero: 'Alpha', skin: 'Star Enforcer' },
+      { hero: 'Ruby', skin: 'Cat Girl' }, { hero: 'Ruby', skin: 'Hidden Orchid Butterfly' }, { hero: 'Ruby', skin: 'Edelweiss' }, { hero: 'Ruby', skin: 'Lady Zombie' }, { hero: 'Ruby', skin: 'Pirate Parrot' }, { hero: 'Ruby', skin: 'Mecha Maiden' }, { hero: 'Ruby', skin: 'Soul Reaper' },
+      { hero: 'Hilda', skin: 'Power of Wildness' }, { hero: 'Hilda', skin: 'Flower of the Wastes' }, { hero: 'Hilda', skin: 'Sacred Guard' }, { hero: 'Hilda', skin: 'Aries' }, { hero: 'Hilda', skin: 'Bass Craze' },
+      { hero: 'Lapu-Lapu', skin: 'Ancestral Blade' }, { hero: 'Lapu-Lapu', skin: 'Imperial Chieftain' }, { hero: 'Lapu-Lapu', skin: 'Vulcan' }, { hero: 'Lapu-Lapu', skin: 'Special Force' }, { hero: 'Lapu-Lapu', skin: 'M3 Champion' },
+      { hero: 'Argus', skin: 'Light Drifter' }, { hero: 'Argus', skin: 'Dark Drifter' }, { hero: 'Argus', skin: 'Cataclysm' }, { hero: 'Argus', skin: 'Darth Vader' }, { hero: 'Argus', skin: 'Winged Nightmare' }, { hero: 'Argus', skin: 'Grievous Scythe' },
+      { hero: 'Roger', skin: 'Dire Wolf' }, { hero: 'Roger', skin: 'Anubis' }, { hero: 'Roger', skin: 'Dr Beast' }, { hero: 'Roger', skin: 'Phantom Pirate' }, { hero: 'Roger', skin: 'Cyber Wolf' }, { hero: 'Roger', skin: 'Cyborg Werewolf' }, { hero: 'Roger', skin: 'Fiend Hunter' }, { hero: 'Roger', skin: 'Phantom Ranger' },
+      { hero: 'Jawhead', skin: 'Boy Scout' }, { hero: 'Jawhead', skin: 'Space Explorer' }, { hero: 'Jawhead', skin: 'Foo Quarterback' }, { hero: 'Jawhead', skin: 'The Nutcracker' }, { hero: 'Jawhead', skin: 'Cyber Agent' }, { hero: 'Jawhead', skin: 'Candy Bear' },
+      { hero: 'Martis', skin: 'Tyrant' }, { hero: 'Martis', skin: 'Searing Maw' }, { hero: 'Martis', skin: 'God of War' }, { hero: 'Martis', skin: 'Deathrock' }, { hero: 'Martis', skin: 'Capricorn' }, { hero: 'Martis', skin: 'Hexashards' },
+      { hero: 'Kaja', skin: 'Commandment' }, { hero: 'Kaja', skin: 'Kaminari' }, { hero: 'Kaja', skin: 'Skyblocker' }, { hero: 'Kaja', skin: 'Crow Magician' }, { hero: 'Kaja', skin: 'Inferno Taskmaster' },
+      { hero: 'Aldous', skin: 'Red Mantis' }, { hero: 'Aldous', skin: 'Death' }, { hero: 'Aldous', skin: 'The Insentient' }, { hero: 'Aldous', skin: 'Blazing Force' }, { hero: 'Aldous', skin: 'Realm Watcher' }, { hero: 'Aldous', skin: 'Starscream' },
+      { hero: 'Leomord', skin: 'Phantom Knight' }, { hero: 'Leomord', skin: 'Frostborn Paladin' }, { hero: 'Leomord', skin: 'Triumph Eagle' }, { hero: 'Leomord', skin: 'Jack-o\'-lantern' }, { hero: 'Leomord', skin: 'Shadow Knight' },
+      { hero: 'Thamuz', skin: 'Lord of Lava' }, { hero: 'Thamuz', skin: 'Liquid Fire' }, { hero: 'Thamuz', skin: 'Abyssal Reaper' }, { hero: 'Thamuz', skin: 'General Kai' }, { hero: 'Thamuz', skin: 'Sanctified Flame' },
+      { hero: 'Minsitthar', skin: 'King\'s Guard' }, { hero: 'Minsitthar', skin: 'Gilded King' }, { hero: 'Minsitthar', skin: 'Crimson Lion' },
+      { hero: 'Badang', skin: 'Ironfists' }, { hero: 'Badang', skin: 'Susanoo' }, { hero: 'Badang', skin: 'Leo' }, { hero: 'Badang', skin: 'Fist of Zen' }, { hero: 'Badang', skin: 'Pegasus Seiya' }, { hero: 'Badang', skin: 'Sagittarius Seiya' },
+      { hero: 'Guinevere', skin: 'Fleur de Ble' }, { hero: 'Guinevere', skin: 'Athena Asamiya' }, { hero: 'Guinevere', skin: 'Lotus' }, { hero: 'Guinevere', skin: 'Amethyst Dance' }, { hero: 'Guinevere', skin: 'Lady Crane' }, { hero: 'Guinevere', skin: 'Summer Breeze' }, { hero: 'Guinevere', skin: 'Psion of Tomorrow' },
+      { hero: 'Terizla', skin: 'Abyssal Guard' }, { hero: 'Terizla', skin: 'Flare' }, { hero: 'Terizla', skin: 'Hammer Giant' }, { hero: 'Terizla', skin: 'Rustwreck' },
+      { hero: 'X.Borg', skin: 'Blue Storm' }, { hero: 'X.Borg', skin: 'Moto Drifter' }, { hero: 'X.Borg', skin: 'Grafitti Fashion' }, { hero: 'X.Borg', skin: 'Tesla Mania' }, { hero: 'X.Borg', skin: 'Bumblebee' },
+      { hero: 'Dyrroth', skin: 'Scalebore' }, { hero: 'Dyrroth', skin: 'Orochi Chris' }, { hero: 'Dyrroth', skin: 'Ruins Scavenger' }, { hero: 'Dyrroth', skin: 'Prince of Light' }, { hero: 'Dyrroth', skin: 'Naraka Flame' },
+      { hero: 'Silvanna', skin: 'Hallowed Lance' }, { hero: 'Silvanna', skin: 'Midnight Justice' }, { hero: 'Silvanna', skin: 'Pure Heroine' }, { hero: 'Silvanna', skin: 'Queen Frost' }, { hero: 'Silvanna', skin: 'Future Cop' },
+      { hero: 'Yu Zhong', skin: 'Emerald Dragon' }, { hero: 'Yu Zhong', skin: 'Biohazard' }, { hero: 'Yu Zhong', skin: 'Blood Serpent' }, { hero: 'Yu Zhong', skin: 'Exorcist Dragon' }, { hero: 'Yu Zhong', skin: 'Cosmic Dragon' },
+      { hero: 'Khaleed', skin: 'Desert Warrior' }, { hero: 'Khaleed', skin: 'Wavebreaker' }, { hero: 'Khaleed', skin: 'Prince of Sand' },
+      { hero: 'Paquito', skin: 'Death Blow' }, { hero: 'Paquito', skin: 'Manny Pacquiao' }, { hero: 'Paquito', skin: 'Underground Boxer' }, { hero: 'Paquito', skin: 'Fulgurent Punch' },
+      { hero: 'Phoveus', skin: 'Horror Whipper' }, { hero: 'Phoveus', skin: 'Hellsing Titan' },
+      { hero: 'Aulus', skin: 'Berserker' }, { hero: 'Aulus', skin: 'Bararian King' },
+      { hero: 'Julian', skin: 'Silent Edge' }, { hero: 'Julian', skin: 'Megumi Fushiguro' }, { hero: 'Julian', skin: 'Panthera Striker' },
+      { hero: 'Fredrinn', skin: 'Regal Renegade' }, { hero: 'Fredrinn', skin: 'Jewel Heist' }, { hero: 'Fredrinn', skin: 'Neobeast' },
+      { hero: 'Arlott', skin: 'Wandering Lancer' }, { hero: 'Arlott', skin: 'Lone Shadow' }, { hero: 'Arlott', skin: 'Infernal Fiend' },
+      { hero: 'Cici', skin: 'Whimsical Performer' },
+
+      // --- ASSASSIN ---
+      { hero: 'Saber', skin: 'Golden Warrior' }, { hero: 'Saber', skin: 'Force Warrior' }, { hero: 'Saber', skin: 'Codename - Storm' }, { hero: 'Saber', skin: 'Fullmetal Ronin' }, { hero: 'Saber', skin: 'S.A.B.E.R. Regulator' }, { hero: 'Saber', skin: 'Onimaru' }, { hero: 'Saber', skin: 'Silver Edge' }, { hero: 'Saber', skin: 'Cyber Hunter' },
+      { hero: 'Karina', skin: 'Phantom Blade' }, { hero: 'Karina', skin: 'Christmas Carnival' }, { hero: 'Karina', skin: 'Black Pearl' }, { hero: 'Karina', skin: 'Leona' }, { hero: 'Karina', skin: 'Doom Duelist' }, { hero: 'Karina', skin: 'Spider Lily' }, { hero: 'Karina', skin: 'Gemini - Halo' }, { hero: 'Karina', skin: 'Blood Moon' },
+      { hero: 'Fanny', skin: 'Hovering Blade' }, { hero: 'Fanny', skin: 'Campus Youth' }, { hero: 'Fanny', skin: 'Punk Princess' }, { hero: 'Fanny', skin: 'Skylark' }, { hero: 'Fanny', skin: 'Royal Cavalry' }, { hero: 'Fanny', skin: 'Lightborn - Ranger' }, { hero: 'Fanny', skin: 'Imperial Warrior' }, { hero: 'Fanny', skin: 'Blade of Kibou' }, { hero: 'Fanny', skin: 'Heartbreaking Mami' }, { hero: 'Fanny', skin: 'Mikasa Ackerman' },
+      { hero: 'Hayabusa', skin: 'Spacetime Shadow' }, { hero: 'Hayabusa', skin: 'Future Enforcer' }, { hero: 'Hayabusa', skin: 'Sushi Master' }, { hero: 'Hayabusa', skin: 'Shadow of Obscurity' }, { hero: 'Hayabusa', skin: 'Biological Weapon' }, { hero: 'Hayabusa', skin: 'Shura' }, { hero: 'Hayabusa', skin: 'Evolution' },
+      { hero: 'Natalia', skin: 'Glass Blade' }, { hero: 'Natalia', skin: 'Phantom Dancer' }, { hero: 'Natalia', skin: 'Cyber Agent' }, { hero: 'Natalia', skin: 'Midnight Raven' }, { hero: 'Natalia', skin: 'Grim Strangler' }, { hero: 'Natalia', skin: 'Warrioress' },
+      { hero: 'Lancelot', skin: 'Masked Knight' }, { hero: 'Lancelot', skin: 'Christmas Carnival' }, { hero: 'Lancelot', skin: 'Royal Matador' }, { hero: 'Lancelot', skin: 'Dark Earl' }, { hero: 'Lancelot', skin: 'Pisces' }, { hero: 'Lancelot', skin: 'Floral Knight' }, { hero: 'Lancelot', skin: 'Swordmaster' }, { hero: 'Lancelot', skin: 'Bren Esports' }, { hero: 'Lancelot', skin: 'Empyrean Flame' },
+      { hero: 'Helcurt', skin: 'Exoracial Executer' }, { hero: 'Helcurt', skin: 'Ice Scythe' }, { hero: 'Helcurt', skin: 'Evolved Predator' }, { hero: 'Helcurt', skin: 'Phantom Feline' }, { hero: 'Helcurt', skin: 'Scorpio' },
+      { hero: 'Gusion', skin: 'Holy Blade' }, { hero: 'Gusion', skin: 'Cyber Ops' }, { hero: 'Gusion', skin: 'Dangerous Liaison' }, { hero: 'Gusion', skin: 'V.E.N.O.M. Emperor Scorpion' }, { hero: 'Gusion', skin: 'K\'' }, { hero: 'Gusion', skin: 'Cosmic Gleam' }, { hero: 'Gusion', skin: 'Night Owl' }, { hero: 'Gusion', skin: 'Soul Revelation' }, { hero: 'Gusion', skin: 'Dimension Walker' },
+      { hero: 'Selena', skin: 'Wasp Queen' }, { hero: 'Selena', skin: 'Double Identity' }, { hero: 'Selena', skin: 'Gemini - Shadow' }, { hero: 'Selena', skin: 'Thunder Flash' }, { hero: 'Selena', skin: 'STUN Selena' }, { hero: 'Selena', skin: 'Gothic Curse' },
+      { hero: 'Hanzo', skin: 'The Pale Phantom' }, { hero: 'Hanzo', skin: 'Undead King' }, { hero: 'Hanzo', skin: 'Insidious Tutor' },
+      { hero: 'Ling', skin: 'Fiery Moth' }, { hero: 'Ling', skin: 'Street Punk' }, { hero: 'Ling', skin: 'Night Shade' }, { hero: 'Ling', skin: 'Cosmo Guard' }, { hero: 'Ling', skin: 'Serene Plume' }, { hero: 'Ling', skin: 'Lord Shen' }, { hero: 'Ling', skin: 'M-World Ling' },
+      { hero: 'Benedetta', skin: 'Honor Blade' }, { hero: 'Benedetta', skin: 'Street Blow' }, { hero: 'Benedetta', skin: 'Moon Crescent' }, { hero: 'Benedetta', skin: 'Ducati Panigale' }, { hero: 'Benedetta', skin: 'Quantum Blade' },
+      { hero: 'Mathilda', skin: 'Swift Plume' }, { hero: 'Mathilda', skin: 'Floral Elf' }, { hero: 'Mathilda', skin: 'Dream Cruiser' },
+      { hero: 'Aamon', skin: 'Nightfall' }, { hero: 'Aamon', skin: 'Noble Crest' }, { hero: 'Aamon', skin: 'Cyber Assassin' },
+      { hero: 'Joy', skin: 'Flash Feline' }, { hero: 'Joy', skin: 'Wave Strider' },
+      { hero: 'Nolan', skin: 'Cosmic Voyager' },
+
+      // --- MAGE ---
+      { hero: 'Alice', skin: 'Spirit Woman' }, { hero: 'Alice', skin: 'Wizardry Teacher' }, { hero: 'Alice', skin: 'Divine Owl' }, { hero: 'Alice', skin: 'Steam Glider' }, { hero: 'Alice', skin: 'Jester' },
+      { hero: 'Nana', skin: 'Clockwork Maid' }, { hero: 'Nana', skin: 'Graveyard Party' }, { hero: 'Nana', skin: 'Slumber Party' }, { hero: 'Nana', skin: 'Wind Fairy' }, { hero: 'Nana', skin: 'Mecha Baby' }, { hero: 'Nana', skin: 'Sundress' }, { hero: 'Nana', skin: 'Aqua Pura' }, { hero: 'Nana', skin: 'Cyclone Clash' },
+      { hero: 'Eudora', skin: 'Flame Red Lips' }, { hero: 'Eudora', skin: 'Christmas Carnival' }, { hero: 'Eudora', skin: 'Vivo Selfie Goddess' }, { hero: 'Eudora', skin: 'Countess Scarlet' }, { hero: 'Eudora', skin: 'Thunderclap' }, { hero: 'Eudora', skin: 'Cosmic Ray' },
+      { hero: 'Gord', skin: 'Hellryder' }, { hero: 'Gord', skin: 'Christmas Cheer' }, { hero: 'Gord', skin: 'Conqueror' }, { hero: 'Gord', skin: 'No.1 Controller' }, { hero: 'Gord', skin: 'New Baron' }, { hero: 'Gord', skin: 'Cyber Hacker' },
+      { hero: 'Kagura', skin: 'Flower Season' }, { hero: 'Kagura', skin: 'Cherry Witch' }, { hero: 'Kagura', skin: 'Summer Festival' }, { hero: 'Kagura', skin: 'Soryu Maiden' }, { hero: 'Kagura', skin: 'Rainy Walk' }, { hero: 'Kagura', skin: 'Water Lily' }, { hero: 'Kagura', skin: 'Beyond the Clouds Kagura' },
+      { hero: 'Cyclops', skin: 'Exorcist' }, { hero: 'Cyclops', skin: 'Super Adventurer' }, { hero: 'Cyclops', skin: 'SABER Exploder' }, { hero: 'Cyclops', skin: 'Deep Sea Rescuer' }, { hero: 'Cyclops', skin: 'Zombie Bambino' }, { hero: 'Cyclops', skin: 'Master Yoda' }, { hero: 'Cyclops', skin: 'Straw Doll' },
+      { hero: 'Aurora', skin: 'Nature\'s Throne' }, { hero: 'Aurora', skin: 'Heartbreak Empress' }, { hero: 'Aurora', skin: 'Foxy Lady' }, { hero: 'Aurora', skin: 'Aquarius' }, { hero: 'Aurora', skin: 'Kula Diamond' }, { hero: 'Aurora', skin: 'Lunar Magic' },
+      { hero: 'Vexana', skin: 'Toxic Kiss' }, { hero: 'Vexana', skin: 'Sanguine Rose' }, { hero: 'Vexana', skin: 'Imprisoned Sun' }, { hero: 'Vexana', skin: 'Lucent Zenith' }, { hero: 'Vexana', skin: 'The Twist' },
+      { hero: 'Odette', skin: 'Black Swan' }, { hero: 'Odette', skin: 'Christmas Carnival' }, { hero: 'Odette', skin: 'Mermaid Princess' }, { hero: 'Odette', skin: 'Butterfly Goddess' }, { hero: 'Odette', skin: 'Virgo' }, { hero: 'Odette', skin: 'Auspicious Charm' }, { hero: 'Odette', skin: 'Sage of the Currents' },
+      { hero: 'Zhask', skin: 'Crystalline' }, { hero: 'Zhask', skin: 'Bone Flamen' }, { hero: 'Zhask', skin: 'Extraterrestrial' }, { hero: 'Zhask', skin: 'Cancer' },
+      { hero: 'Pharsa', skin: 'Wings of Heaven' }, { hero: 'Pharsa', skin: 'Indigo Flare' }, { hero: 'Pharsa', skin: 'Enchanting Witch' }, { hero: 'Pharsa', skin: 'Peafowl\'s Dance' }, { hero: 'Pharsa', skin: 'Empress Phoenix' }, { hero: 'Pharsa', skin: 'Samba Muse' }, { hero: 'Pharsa', skin: 'Neon Shimmer' },
+      { hero: 'Valir', skin: 'Pale Flame' }, { hero: 'Valir', skin: 'Shikigami Summoner' }, { hero: 'Valir', skin: 'Dictator' }, { hero: 'Valir', skin: 'Draconian Flame' }, { hero: 'Valir', skin: 'Demonlord' }, { hero: 'Valir', skin: 'Fireson' },
+      { hero: 'Chang\'e', skin: 'Moonstruck' }, { hero: 'Chang\'e', skin: 'Crimson Moon' }, { hero: 'Chang\'e', skin: 'Floral Elfo' }, { hero: 'Chang\'e', skin: 'Strawberry Dip' }, { hero: 'Chang\'e', skin: 'Vine Cradle' }, { hero: 'Chang\'e', skin: 'Moon Child' },
+      { hero: 'Lunox', skin: 'Bloody Mary' }, { hero: 'Lunox', skin: 'Ash Blossom' }, { hero: 'Lunox', skin: 'Cosmic Harmony' }, { hero: 'Lunox', skin: 'Libra' }, { hero: 'Lunox', skin: 'Butterfly Serenade' }, { hero: 'Lunox', skin: 'Eyes of Eternity' }, { hero: 'Lunox', skin: 'Dawn Revelation' }, { hero: 'Lunox', skin: 'Divine Goddess' },
+      { hero: 'Harith', skin: 'Savannah Cat' }, { hero: 'Harith', skin: 'Stardust' }, { hero: 'Harith', skin: 'EVOS Legends' }, { hero: 'Harith', skin: 'Fashion Expert' }, { hero: 'Harith', skin: 'Psychic' },
+      { hero: 'Kadita', skin: 'Atlantean Princess' }, { hero: 'Kadita', skin: 'White Robin' }, { hero: 'Kadita', skin: 'Hydra Preserver' },
+      { hero: 'Esmeralda', skin: 'Ruddy Dusk' }, { hero: 'Esmeralda', skin: 'Poison Vine' }, { hero: 'Esmeralda', skin: 'Lady Thief' }, { hero: 'Esmeralda', skin: 'Blazing Shadow' }, { hero: 'Esmeralda', skin: 'The Foreseer' }, { hero: 'Esmeralda', skin: 'Lighto' },
+      { hero: 'Lylia', skin: 'School Idol' }, { hero: 'Lylia', skin: 'Star Student' }, { hero: 'Lylia', skin: 'Future Star' }, { hero: 'Lylia', skin: 'Haunted Doll' },
+      { hero: 'Cecilion', skin: 'Wisteria Count' }, { hero: 'Cecilion', skin: 'The Illusionist' }, { hero: 'Cecilion', skin: 'Phantom Count' }, { hero: 'Cecilion', skin: 'Stargazer' },
+      { hero: 'Luo Yi', skin: 'Yin-yang Mage' }, { hero: 'Luo Yi', skin: 'Tenko' }, { hero: 'Luo Yi', skin: 'Dawning Pulse' }, { hero: 'Luo Yi', skin: 'Elysian Goddess' },
+      { hero: 'Yve', skin: 'Astrowarden' }, { hero: 'Yve', skin: 'Ruination' }, { hero: 'Yve', skin: 'Galactic Voyager' },
+      { hero: 'Valentina', skin: 'Twilight Charmer' }, { hero: 'Valentina', skin: 'Dark Elegance' }, { hero: 'Valentina', skin: 'Cyber Witch' },
+      { hero: 'Xavier', skin: 'Verdant Light' }, { hero: 'Xavier', skin: 'Satoru Gojo' }, { hero: 'Xavier', skin: 'Beyond the Clouds Xavier' },
+      { hero: 'Novaria', skin: 'Cosmic Voyager' }, { hero: 'Novaria', skin: 'Star Seeker' },
+      { hero: 'Zhuxin', skin: 'Lantern Glow' },
+
+      // --- MARKSMAN ---
+      { hero: 'Miya', skin: 'Burning Bow' }, { hero: 'Miya', skin: 'Christmas Carnival' }, { hero: 'Miya', skin: 'Captain Thorns' }, { hero: 'Miya', skin: 'Honor' }, { hero: 'Miya', skin: 'Suzuhime' }, { hero: 'Miya', skin: 'Modo Elf' }, { hero: 'Miya', skin: 'Doom Catalyst' }, { hero: 'Miya', skin: 'Atomic Pop Miya' },
+      { hero: 'Bruno', skin: 'Vanguard Elite' }, { hero: 'Bruno', skin: 'Best DJ' }, { hero: 'Bruno', skin: 'Street Football' }, { hero: 'Bruno', skin: 'Neymar Jr' }, { hero: 'Bruno', skin: 'Halo Striker' }, { hero: 'Bruno', skin: 'Green Blitz' },
+      { hero: 'Clint', skin: 'Sun n Sand' }, { hero: 'Clint', skin: 'Guns and Roses' }, { hero: 'Clint', skin: 'Witch Hunter' }, { hero: 'Clint', skin: 'Badang Commander' }, { hero: 'Clint', skin: 'Shadow Knight' }, { hero: 'Clint', skin: 'M4 Sharpshooter' }, { hero: 'Clint', skin: 'Cyber Ranger' },
+      { hero: 'Layla', skin: 'Green Flash' }, { hero: 'Layla', skin: 'Bunny Babe' }, { hero: 'Layla', skin: 'Cannon and Roses' }, { hero: 'Layla', skin: 'Blue Spectre' }, { hero: 'Layla', skin: 'S.A.B.E.R. Breacher' }, { hero: 'Layla', skin: 'Blazing Gun' }, { hero: 'Layla', skin: 'Miss Hikari' }, { hero: 'Layla', skin: 'Twilight Waltz' },
+      { hero: 'Yi Sun-shin', skin: 'Major General' }, { hero: 'Yi Sun-shin', skin: 'Apocalypse Agent' }, { hero: 'Yi Sun-shin', skin: 'Rogun Master' }, { hero: 'Yi Sun-shin', skin: 'Lone Destrier' }, { hero: 'Yi Sun-shin', skin: 'Azure Dragon' },
+      { hero: 'Moskov', skin: 'Spear of Bone' }, { hero: 'Moskov', skin: 'Snake Eye Commander' }, { hero: 'Moskov', skin: 'Yasha' }, { hero: 'Moskov', skin: 'Javelin Champion' }, { hero: 'Moskov', skin: 'Twilight Dragon' }, { hero: 'Moskov', skin: 'Blood Spear' }, { hero: 'Moskov', skin: 'Doom Incarnate' }, { hero: 'Moskov', skin: 'Violent Crimson' },
+      { hero: 'Karrie', skin: 'Rising Star' }, { hero: 'Karrie', skin: 'Bladed Mantis' }, { hero: 'Karrie', skin: 'Dragon Queen' }, { hero: 'Karrie', skin: 'Jester' }, { hero: 'Karrie', skin: 'Hawkwatch' }, { hero: 'Karrie', skin: 'Neon Lightwheel' }, { hero: 'Karrie', skin: 'Wheel of Justice' }, { hero: 'Karrie', skin: 'Ice Talon' },
+      { hero: 'Irithel', skin: 'Silver Cyclone' }, { hero: 'Irithel', skin: 'Nightarrow' }, { hero: 'Irithel', skin: 'Hellfire' }, { hero: 'Irithel', skin: 'Sagittarius' }, { hero: 'Irithel', skin: 'Astral Wanderer' }, { hero: 'Irithel', skin: 'Ice Queen' }, { hero: 'Irithel', skin: 'Monster Truck' },
+      { hero: 'Lesley', skin: 'Royal Musketeer' }, { hero: 'Lesley', skin: 'General Rosa' }, { hero: 'Lesley', skin: 'Cheergunner' }, { hero: 'Lesley', skin: 'Stellaris Ghost' }, { hero: 'Lesley', skin: 'Dangerous Love' }, { hero: 'Lesley', skin: 'Angelic Agent' }, { hero: 'Lesley', skin: 'Falcon Mistress' }, { hero: 'Lesley', skin: 'Hawk-eyed Sniper' },
+      { hero: 'Hanabi', skin: 'Resplendent Iris' }, { hero: 'Hanabi', skin: 'V.E.N.O.M. Nephila' }, { hero: 'Hanabi', skin: 'Fiery Moth' }, { hero: 'Hanabi', skin: 'Rakshesha' }, { hero: 'Hanabi', skin: 'Riverland Phoenix' }, { hero: 'Hanabi', skin: 'Moonlit Ninja' },
+      { hero: 'Claude', skin: 'Space Voyage' }, { hero: 'Claude', skin: 'Plunderous Pirate' }, { hero: 'Claude', skin: 'Golden Flash' }, { hero: 'Claude', skin: 'Mecha Dragon' }, { hero: 'Claude', skin: 'Blazing Trace' }, { hero: 'Claude', skin: 'Earth\'s Mightiest' }, { hero: 'Claude', skin: 'Bad Bro' },
+      { hero: 'Kimmy', skin: 'Steam Researcher' }, { hero: 'Kimmy', skin: 'Charge Leader' }, { hero: 'Kimmy', skin: 'Astrocat' }, { hero: 'Kimmy', skin: 'Frost Wing' }, { hero: 'Kimmy', skin: 'Bio Frontier' }, { hero: 'Kimmy', skin: 'Jet Pack' },
+      { hero: 'Granger', skin: 'Bardic Whisper' }, { hero: 'Granger', skin: 'Doomsday Terminator' }, { hero: 'Granger', skin: 'Lightborn - Overrider' }, { hero: 'Granger', skin: 'Biosoldier' }, { hero: 'Granger', skin: 'Agent Z' }, { hero: 'Granger', skin: 'Starfall Knight' }, { hero: 'Granger', skin: 'Megatron' }, { hero: 'Granger', skin: 'Hellbringer' },
+      { hero: 'Wanwan', skin: 'Darting Star' }, { hero: 'Wanwan', skin: 'Shoujo Commander' }, { hero: 'Wanwan', skin: 'Pixel Blast' }, { hero: 'Wanwan', skin: 'E-girl' }, { hero: 'Wanwan', skin: 'Teen Pop' }, { hero: 'Wanwan', skin: 'M-World Wanwan' }, { hero: 'Wanwan', skin: 'Flying Swallow' },
+      { hero: 'Popol and Kupa', skin: 'Hunting Pals' }, { hero: 'Popol and Kupa', skin: 'Tribal Howl' }, { hero: 'Popol and Kupa', skin: 'Soundwave and Ravage' }, { hero: 'Popol and Kupa', skin: 'Spirit Horse' },
+      { hero: 'Brody', skin: 'Nameless Stray' }, { hero: 'Brody', skin: 'Lethal Fang' }, { hero: 'Brody', skin: 'S.T.U.N. Brody' }, { hero: 'Brody', skin: 'Ore-chemist' },
+      { hero: 'Beatrix', skin: 'X Factor' }, { hero: 'Beatrix', skin: 'Blitz Attack' }, { hero: 'Beatrix', skin: 'Gunslinger' }, { hero: 'Beatrix', skin: 'Lightflash' }, { hero: 'Beatrix', skin: 'Stellar Brilliance' }, { hero: 'Beatrix', skin: 'Vibrant Fiesta' },
+      { hero: 'Natan', skin: 'Greenish Flash' }, { hero: 'Natan', skin: 'Chaos Hunter' }, { hero: 'Natan', skin: 'Temporal Vortex' },
+      { hero: 'Melissa', skin: 'Cursed Needle' }, { hero: 'Melissa', skin: 'Tuan Jie' }, { hero: 'Melissa', skin: 'Nobara Kugisaki' }, { hero: 'Melissa', skin: 'Nightwalker' },
+      { hero: 'Ixia', skin: 'Dynamic Streak' }, { hero: 'Ixia', skin: 'Jukebox Queen' },
+
+      // --- SUPPORT ---
+      { hero: 'Rafaela', skin: 'Fertility Goddess' }, { hero: 'Rafaela', skin: 'Flower Fairy' }, { hero: 'Rafaela', skin: 'S.A.B.E.R. Angel' }, { hero: 'Rafaela', skin: 'Biomedic' }, { hero: 'Rafaela', skin: 'Star Chaser' }, { hero: 'Rafaela', skin: 'Seraphic Selfie' },
+      { hero: 'Estes', skin: 'Bishop' }, { hero: 'Estes', skin: 'Galaxy Dominator' }, { hero: 'Estes', skin: 'White Crane' }, { hero: 'Estes', skin: 'Rattan Dragon' }, { hero: 'Estes', skin: 'Blacklist International' }, { hero: 'Estes', skin: 'Cosmic Sorcerer' },
+      { hero: 'Diggie', skin: 'Pigeoneer' }, { hero: 'Diggie', skin: 'Constellation' }, { hero: 'Diggie', skin: 'Circus Clown' }, { hero: 'Diggie', skin: 'Fairytaler' }, { hero: 'Diggie', skin: 'Underoot Sentry' },
+      { hero: 'Angela', skin: 'Dove of Love' }, { hero: 'Angela', skin: 'Outlaw Maid' }, { hero: 'Angela', skin: 'Shanghai Maiden' }, { hero: 'Angela', skin: 'V.E.N.O.M. Vespid' }, { hero: 'Angela', skin: 'Summer Vibes' }, { hero: 'Angela', skin: 'Floral Elf' }, { hero: 'Angela', skin: 'Cyber Cyber' }, { hero: 'Angela', skin: 'Avatar of Time' },
+      { hero: 'Faramis', skin: 'Dark Necromancer' }, { hero: 'Faramis', skin: 'Royal Magus' }, { hero: 'Faramis', skin: 'Mythic Sage' },
+      { hero: 'Carmilla', skin: 'Wisteria Countess' }, { hero: 'Carmilla', skin: 'Magician' }, { hero: 'Carmilla', skin: 'Phantom Countess' },
+      { hero: 'Floryn', skin: 'Blossom' }, { hero: 'Floryn', skin: 'Paw Power' }, { hero: 'Floryn', skin: 'Summer Breeze' }
+    ];
+
+    const heroGrid = document.getElementById('heroGrid');
+    const fileInput = document.getElementById('fileInput');
+    const fileDisplay = document.getElementById('fileDisplay');
+    const fileBadge = document.getElementById('fileBadge');
+    const heroInput = document.getElementById('heroInput');
+    const skinInput = document.getElementById('skinInput');
+    const generateBtn = document.getElementById('generateBtn');
+    const resultHD = document.getElementById('resultHD');
+    const resultImage = document.getElementById('resultImage');
+
+    const autocompleteContainer = document.createElement('div');
+    autocompleteContainer.style.position = 'relative';
+    autocompleteContainer.style.width = '100%';
+    heroInput.parentNode.insertBefore(autocompleteContainer, heroInput);
+    autocompleteContainer.appendChild(heroInput);
+
+    const suggestionBox = document.createElement('div');
+    suggestionBox.style.position = 'absolute';
+    suggestionBox.style.top = '100%';
+    suggestionBox.style.left = '0';
+    suggestionBox.style.width = '100%';
+    suggestionBox.style.background = '#171f2b';
+    suggestionBox.style.border = '1px solid #384258';
+    suggestionBox.style.borderRadius = '12px';
+    suggestionBox.style.maxHeight = '200px';
+    suggestionBox.style.overflowY = 'auto';
+    suggestionBox.style.zIndex = '999';
+    suggestionBox.style.display = 'none';
+    suggestionBox.style.marginTop = '4px';
+    suggestionBox.style.boxShadow = '0 8px 16px rgba(0,0,0,0.5)';
+    autocompleteContainer.appendChild(suggestionBox);
+
+    const skinDatalist = document.createElement('datalist');
+    skinDatalist.id = 'skinList';
+    document.body.appendChild(skinDatalist);
+    skinInput.setAttribute('list', 'skinList');
+
+    let currentHeroes = [];
+
+    function renderHeroes(heroesArray) {
+      heroGrid.innerHTML = '';
+      if (!heroesArray || heroesArray.length === 0) {
+        heroGrid.innerHTML = `<div class="empty-mock">✨ Tambahkan minimal 10 skin hero</div>`;
+        return;
+      }
+      heroesArray.forEach((item, index) => {
+        const heroName = item.hero || 'Hero';
+        const skinName = item.skin || 'Skin';
+        const initial = heroName.charAt(0).toUpperCase() || '?';
+        const div = document.createElement('div');
+        div.className = 'hero-item';
+        div.innerHTML = `
+          <div class="hero-icon">${initial}</div>
+          <div class="info">
+            <span class="hero-name">${heroName}</span>
+            <span class="skin-name">${skinName}</span>
+          </div>
+          <span class="badge-skin">#${index+1}</span>
+        `;
+        heroGrid.appendChild(div);
+      });
+    }
+
+    heroInput.addEventListener('input', function() {
+      const val = this.value.trim().toLowerCase();
+      suggestionBox.innerHTML = '';
+      if (!val) {
+        suggestionBox.style.display = 'none';
+        return;
+      }
+
+      const uniqueHeroes = [...new Set(allSkins.map(s => s.hero))];
+      const matches = uniqueHeroes.filter(h => h.toLowerCase().includes(val)).slice(0, 6);
+
+      if (matches.length > 0) {
+        matches.forEach(hero => {
+          const item = document.createElement('div');
+          item.textContent = hero;
+          item.style.padding = '10px 16px';
+          item.style.cursor = 'pointer';
+          item.style.color = '#f0e3cc';
+          item.style.borderBottom = '1px solid #232b3b';
+          
+          item.addEventListener('mouseenter', () => item.style.background = '#222d3d');
+          item.addEventListener('mouseleave', () => item.style.background = 'transparent');
+          
+          item.addEventListener('click', () => {
+            heroInput.value = hero;
+            suggestionBox.style.display = 'none';
+            updateSkinSuggestions(hero);
+          });
+          suggestionBox.appendChild(item);
+        });
+        suggestionBox.style.display = 'block';
+      } else {
+        suggestionBox.style.display = 'none';
+      }
+    });
+
+    function updateSkinSuggestions(heroName) {
+      skinDatalist.innerHTML = '';
+      const filteredSkins = allSkins.filter(s => s.hero.toLowerCase() === heroName.toLowerCase());
+      filteredSkins.forEach(s => {
+        const option = document.createElement('option');
+        option.value = s.skin;
+        skinDatalist.appendChild(option);
+      });
+      if (filteredSkins.length > 0) {
+        skinInput.value = filteredSkins[0].skin;
+      }
+    }
+
+    document.addEventListener('click', function(e) {
+      if (e.target !== heroInput && e.target !== suggestionBox) {
+        suggestionBox.style.display = 'none';
+      }
+    });
+
+    function initDefaultHeroes() {
+      currentHeroes = allSkins.slice(0, 10);
+      renderHeroes(currentHeroes);
+    }
+    initDefaultHeroes();
+
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files.length > 0) {
+        const fileName = this.files[0].name;
+        const shortName = fileName.length > 28 ? fileName.substring(0, 24) + '…' : fileName;
+        fileDisplay.textContent = shortName;
+        fileBadge.textContent = '📎 ' + shortName;
+      }
+    });
+
+    function addHeroFromInput() {
+      const heroVal = heroInput.value.trim();
+      const skinVal = skinInput.value.trim();
+      if (!heroVal || !skinVal) {
+        alert('⚠️ Masukkan Nama Hero dan Skin terlebih dahulu!');
+        return false;
+      }
+
+      currentHeroes.push({ hero: heroVal, skin: skinVal });
+      renderHeroes(currentHeroes);
+
+      heroInput.value = '';
+      skinInput.value = '';
+      heroInput.placeholder = 'Ketik Hero lain...';
+      skinInput.placeholder = 'Pilih Skin lain...';
+      return true;
+    }
+
+    generateBtn.addEventListener('click', function() {
+      const heroVal = heroInput.value.trim();
+      const skinVal = skinInput.value.trim();
+      if (heroVal && skinVal) {
+        addHeroFromInput();
+      }
+
+      while (currentHeroes.length < 10) {
+        const idx = currentHeroes.length;
+        const randomSkin = allSkins[idx % allSkins.length];
+        currentHeroes.push({ 
+          hero: randomSkin.hero, 
+          skin: randomSkin.skin 
+        });
+      }
+      renderHeroes(currentHeroes);
+
+      let imageUrl = '';
+      if (fileInput.files && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imageUrl = e.target.result;
+          resultImage.src = imageUrl;
+          resultHD.classList.add('show');
+          resultHD.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const canvas = document.createElement('canvas');
+        canvas.width = 950;
+        canvas.height = 600;
+        const ctx = canvas.getContext('2d');
+
+        const grd = ctx.createRadialGradient(475, 300, 50, 475, 300, 650);
+        grd.addColorStop(0, '#2a3348');
+        grd.addColorStop(0.6, '#141b27');
+        grd.addColorStop(1, '#070a10');
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.shadowColor = '#f5c54235';
+        ctx.shadowBlur = 35;
+        ctx.strokeStyle = '#f5c54245';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(20, 20, canvas.width-40, canvas.height-40);
+        ctx.shadowBlur = 0;
+
+        ctx.font = 'bold 38px Segoe UI, Roboto, sans-serif';
+        ctx.fillStyle = '#f5d68a';
+        ctx.fillText('⚡ EDIT SPEK MLBB × icaanz', 60, 90);
+
+        ctx.font = '18px Segoe UI, sans-serif';
+        ctx.fillStyle = '#b7aa88';
+        ctx.fillText('📸 ' + currentHeroes.length + ' Total Mastered Skins Database', 60, 130);
+
+        ctx.font = '500 16px Segoe UI, sans-serif';
+        let yPos = 185;
+        const maxShow = Math.min(currentHeroes.length, 14);
+        for (let i = 0; i < maxShow; i++) {
+          const h = currentHeroes[i];
+          ctx.fillStyle = i % 2 === 0 ? '#f0e3cc' : '#d4c8ac';
+          const label = `${i+1}. ${h.hero}  —  [ ${h.skin} ]`;
+          ctx.fillText(label, 60, yPos);
+          yPos += 30;
+        }
+
+        ctx.font = '13px monospace';
+        ctx.fillStyle = '#7a8296';
+        ctx.fillText('🔑 ID Lisensi: IcaanzMlbb02838  |  Kontak: wa.me/6283199265399', 60, canvas.height-35);
+
+        imageUrl = canvas.toDataURL('image/png');
+        resultImage.src = imageUrl;
+        resultHD.classList.add('show');
+        resultHD.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+
+    heroInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addHeroFromInput();
+      }
+    });
+  })();
+</script>
+</body>
+</html>
